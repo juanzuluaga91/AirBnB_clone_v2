@@ -29,9 +29,8 @@ class DBStorage():
         if 'HBNB_ENV' in environ and environ['HBNB_ENV'] == 'test':
             Base.metadata.drop_all(bind=self.__engine)
 
-def all(self, cls=None):
-
-        clases = {User, State, City, Amenity, Place, Review}
+    def all(self, cls=None):
+        clases = [User, State, City, Amenity, Place, Review]
         __objects = {}
         for c in clases:
             objs = self.__session.query(c).all()
