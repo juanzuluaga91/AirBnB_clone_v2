@@ -8,6 +8,7 @@ from os import environ
 import models
 from sqlalchemy import Table, Text
 
+
 place_amenity = Table('place_amenity', Base.metadata,
                       Column('place_id', String(60), ForeignKey('places.id'),
                              primary_key=True, nullable=False),
@@ -43,6 +44,7 @@ class Place(BaseModel, Base):
     price_by_night = Column(Integer, default=0, nullable=False)
     latitude = Column(Float, nullable=True)
     longitude = Column(Float, nullable=True)
+    amenity_ids = []
     if 'HBNB_TYPE_STORAGE' in environ and environ['HBNB_TYPE_STORAGE'] == 'db':
         reviews = relationship('Review', cascade="all, delete",
                                backref='place')
@@ -66,7 +68,7 @@ class Place(BaseModel, Base):
         def amenities(self):
             """"""
             for k, v in models.storage.all().items():
-                if "Amenity" in k and v.amenity_id == self.id:
+                if "Amenity" in k and v.amenity_ids == self.id:
                     tmp_list.append(v)
             return tmp_list
 
@@ -74,4 +76,4 @@ class Place(BaseModel, Base):
         def amenities(self, value):
             """"""
             if value.__class__.__name__ == "Amenity":
-                self.amenity_id.append(str(value.id))
+                self.amenity_ids.append(str(value.id))
