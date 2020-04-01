@@ -38,12 +38,27 @@ class Place(BaseModel, Base):
     if 'HBNB_TYPE_STORAGE' in environ and environ['HBNB_TYPE_STORAGE'] == 'db':
         reviews = relationship('Review', backref='place')
     else:
+        tmp_list = []
+
         @property
         def reviews(self):
-            """ getter for reviews """
+            """"""
 
-            tmp_list = []
             for k, v in models.storage.items():
                 if "Review" in k and v.place_id == self.id:
                     tmp_list.append(v)
             return tmp_list
+
+        @property
+        def amenities(self):
+            """"""
+            for k, v in models.storage.all().items():
+                if "Amenity" in k and v.amenity_id == self.id:
+                    tmp_list.append(v)
+            return lis
+
+        @amenities.setter
+        def amenities(self, value):
+            """"""
+            if value.__class__.__name__ == "Amenity":
+                self.amenity_id.append(str(value.id))
