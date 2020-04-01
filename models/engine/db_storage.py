@@ -18,8 +18,7 @@ class DBStorage():
     """
     __engine = None
     __session = None
-    __objects = {}
-    clases = [State, City, User, Place, Review, Amenity]
+    __clases = [User, State, City]
 
     def __init__(self):
         self.__engine = create_engine('mysql+mysqldb://{}:{}@{}/{}'.
@@ -32,18 +31,19 @@ class DBStorage():
             Base.metadata.drop_all(bind=self.__engine)
 
     def all(self, cls=None):
+        __objects = {}
+        for c in self.__clases:
+            objs = self.__session.query(c).all()
+            for obj in objs:
+                key = type(cls).__name__ + "." + obj.id
+                __objects[key] = obj
         if cls:
-            objects = self.__session.query(eval(cls)).all()
-            for obj in objects:
-                key = cls.__name__ + "." + obj.id
-                self.__objects[key] = obj
-        else:
-            for c in self.__clases:
-                objects = self.__session.query(c).all()
-                for obj in objects:
-                    key = cls + "." + obj.id
-                    self.__objects[key] = obj
-        return self.__objects
+            o_filter = {}
+            for k, v in self.__objects.items():
+                if type(v).__name__ == cls.__name__:
+                    o_filter[k] = v
+            return o_filter
+        return __objects
 
     def new(self, obj):
         self.__session.add(obj)
