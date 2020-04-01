@@ -67,7 +67,7 @@ class Place(BaseModel, Base):
             """"""
             for k, v in models.storage.all().items():
                 if "Amenity" in k and v.amenity_id == self.id:
-                    lis.append(v)
+                    tmp_lis.append(v)
             return lis
 
         @amenities.setter
