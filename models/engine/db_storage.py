@@ -32,11 +32,10 @@ class DBStorage():
             Base.metadata.drop_all(bind=self.__engine)
 
     def all(self, cls=None):
-        """
-        """
+        """query on the current database session"""
         new_dict = {}
         for c in classes:
-            if cls is None or cls is classes[c] or cls is c:
+            if cls is None:
                 objs = self.__session.query(classes[c]).all()
                 for obj in objs:
                     key = obj.__class__.__name__ + '.' + obj.id
@@ -44,24 +43,16 @@ class DBStorage():
         return (new_dict)
 
     def new(self, obj):
-        """
-        """
         self.__session.add(obj)
 
     def save(self):
-        """
-        """
         self.__session.commit()
 
     def delete(self, obj=None):
-        """
-        """
         if obj is not None:
             self.__session.delete(obj)
 
     def reload(self):
-        """
-        """
         Base.metadata.create_all(self.__engine)
         Session = sessionmaker(bind=self.__engine, expire_on_commit=False)
         self.__session = scoped_session(Session)()
