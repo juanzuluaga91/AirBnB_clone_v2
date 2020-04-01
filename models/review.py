@@ -5,7 +5,6 @@ from sqlalchemy import String, Column
 from sqlalchemy import ForeignKey
 
 
-
 class Review(BaseModel, Base):
     """This is the class for Review
     Attributes:
