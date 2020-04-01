@@ -12,6 +12,8 @@ from models.amenity import Amenity
 from models.place import Place
 from models.review import Review
 
+classes = {"Amenity": Amenity, "City": City,
+           "Place": Place, "Review": Review, "State": State, "User": User}
 
 class DBStorage():
     """
@@ -30,14 +32,15 @@ class DBStorage():
             Base.metadata.drop_all(bind=self.__engine)
 
     def all(self, cls=None):
-        clases = [User, State, City, Amenity, Place, Review]
-        __objects = {}
-        for c in clases:
-            objs = self.__session.query(c).all()
-            for obj in objs:
-                key = c.__name__ + "." + obj.id
-                __objects[key] = obj
-        return __objects
+        """query on the current database session"""
+        new_dict = {}
+        for c in classes:
+            if cls is None or cls is classes[c] or cls is c:
+                objs = self.__session.query(classes[c]).all()
+                for obj in objs:
+                    key = obj.__class__.__name__ + '.' + obj.id
+                    new_dict[key] = obj
+        return (new_dict)
 
     def new(self, obj):
         self.__session.add(obj)
