@@ -32,7 +32,8 @@ class DBStorage():
             Base.metadata.drop_all(bind=self.__engine)
 
     def all(self, cls=None):
-        """query on the current database session"""
+        """
+        """
         new_dict = {}
         for c in classes:
             if cls is None or cls is classes[c] or cls is c:
