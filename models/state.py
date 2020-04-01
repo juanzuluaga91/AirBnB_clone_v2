@@ -19,4 +19,12 @@ class State(BaseModel, Base):
                               backref="state")
 
     else:
-        pass
+        @property
+        def cities(self):
+            """
+            """
+            l_cities = []
+            for k, v in models.storage.all().items():
+                if "City" in k and v.state_id == self.id:
+                    l_cities.append(v)
+            return l_cities
