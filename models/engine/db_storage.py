@@ -33,10 +33,11 @@ class DBStorage():
         clases = {User, State, City, Amenity, Place, Review}
         new_obj = {}
         for c in clases:
-            objs = self.__session.query(c).all()
-            for obj in objs:
-                key = c.__name__ + "." + obj.id
-                new_obj[key] = obj
+            if cls:
+                objs = self.__session.query(clases[c]).all()
+                for obj in objs:
+                    key = obj.__class__.__name__ + "." + obj.id
+                    new_obj[key] = obj
         return new_obj
 
     def new(self, obj):
