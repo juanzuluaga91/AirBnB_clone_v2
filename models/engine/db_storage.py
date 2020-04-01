@@ -30,14 +30,14 @@ class DBStorage():
             Base.metadata.drop_all(bind=self.__engine)
 
     def all(self, cls=None):
-        clases = [User, State, City, Amenity, Place, Review]
-        __objects = {}
+        clases = {User, State, City, Amenity, Place, Review}
+        new_obj = {}
         for c in clases:
             objs = self.__session.query(c).all()
             for obj in objs:
                 key = c.__name__ + "." + obj.id
-                __objects[key] = obj
-        return __objects
+                new_obj[key] = obj
+        return new_obj
 
     def new(self, obj):
         self.__session.add(obj)
