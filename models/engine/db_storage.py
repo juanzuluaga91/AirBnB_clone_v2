@@ -12,7 +12,7 @@ from models.amenity import Amenity
 from models.place import Place
 from models.review import Review
 
-classes = [Amenity, City, Place, Review, State, User}
+classes = [Amenity, City, Place, Review, State, User]
 
 
 class DBStorage():
@@ -36,11 +36,10 @@ class DBStorage():
         """
         new_dict = {}
         for c in classes:
-            if cls is None or cls is classes[c] or cls is c:
-                objs = self.__session.query(classes[c]).all()
-                for obj in objs:
-                    key = obj.__class__.__name__ + '.' + obj.id
-                    new_dict[key] = obj
+            objs = self.__session.query(classes[c]).all()
+            for obj in objs:
+                key = obj.__class__.__name__ + '.' + obj.id
+                new_dict[key] = obj
         return (new_dict)
 
     def new(self, obj):
