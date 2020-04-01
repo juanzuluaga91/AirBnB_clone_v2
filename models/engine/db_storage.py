@@ -18,7 +18,6 @@ class DBStorage():
     """
     __engine = None
     __session = None
-    __list = [User, State, City, Amenity, Place, Review]
 
     def __init__(self):
         self.__engine = create_engine('mysql+mysqldb://{}:{}@{}/{}'.
@@ -30,23 +29,16 @@ class DBStorage():
         if 'HBNB_ENV' in environ and environ['HBNB_ENV'] == 'test':
             Base.metadata.drop_all(bind=self.__engine)
 
-    def all(self, cls=None):
-        """
-        """
+def all(self, cls=None):
 
-        objs = {}
-        if cls is not None:
-            res = self.__session.query(eval(cls))
-            for obj in res:
-                key = ".".join([cls, obj.id])
-                objs.update({key: obj})
-        else:
-            for class_ in self.__list:
-                res = self.__session.query(class_)
-                for obj in res:
-                    key = ".".join([cls, obj.id])
-                    objs.update({key: obj})
-        return objs
+        clases = {User, State, City, Amenity, Place, Review}
+        __objects = {}
+        for c in clases:
+            objs = self.__session.query(c).all()
+            for obj in objs:
+                key = c.__name__ + "." + obj.id
+                __objects[key] = obj
+        return __objects
 
     def new(self, obj):
         self.__session.add(obj)
