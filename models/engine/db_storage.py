@@ -1,6 +1,3 @@
-#!/usr/bin/python3
-"""
-"""
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, scoped_session
 from os import getenv, environ
@@ -11,9 +8,9 @@ from models.city import City
 from models.amenity import Amenity
 from models.place import Place
 from models.review import Review
-
 classes = {"Amenity": Amenity, "City": City,
            "Place": Place, "Review": Review, "State": State, "User": User}
+
 
 class DBStorage():
     """
