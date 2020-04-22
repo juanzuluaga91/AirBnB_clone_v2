@@ -67,3 +67,7 @@ class FileStorage:
                 del self.__objects[key]
             except FileNotFoundError:
                 pass
+
+    def close(self):
+        """ JSON file to objects """
+        self.reload()

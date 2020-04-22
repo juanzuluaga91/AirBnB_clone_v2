@@ -1,5 +1,6 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, scoped_session
+from sqlalchemy.orm.session import Session
 from os import getenv, environ
 from models.base_model import BaseModel, Base
 from models.user import User
@@ -62,3 +63,7 @@ class DBStorage():
         Base.metadata.create_all(self.__engine)
         Session = sessionmaker(bind=self.__engine, expire_on_commit=False)
         self.__session = scoped_session(Session)()
+
+    def close(self):
+        """remove() method on the private session attribute """
+        Session.close(self.__session)
